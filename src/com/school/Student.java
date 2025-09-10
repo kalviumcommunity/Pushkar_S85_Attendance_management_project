@@ -16,7 +16,7 @@ public class Student extends Person { // Extends Person
     public String getGradeLevel() {
         return gradeLevel;
     }
-
+ 
     @Override // Good practice to indicate overriding
     public void displayDetails() {
         super.displayDetails(); // Call Person's displayDetails

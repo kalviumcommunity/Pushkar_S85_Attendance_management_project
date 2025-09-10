@@ -16,7 +16,7 @@ public class AttendanceRecord {
             System.out.println("Warning: Invalid attendance status provided. Set to 'Invalid'.");
         }
     }
-
+ 
    
     public int getStudentId() { 
         return studentId; 

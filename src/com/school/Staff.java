@@ -7,7 +7,7 @@ public class Staff extends Person {
         super(name); // Calls Person constructor
         this.role = role;
     }
-
+ 
     // Getter for role (optional for now)
     public String getRole() {
         return role;

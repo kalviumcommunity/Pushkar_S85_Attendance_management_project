@@ -6,7 +6,7 @@
 - Demonstrated creation and display of `Student`, `Teacher`, and `Staff` objects in `Main.java`.
 - Updated `AttendanceRecord` creation to use the inherited `getId()` method.
 
-### How to Run
+### How to Run 
 1. Navigate to the project root directory.
 2. Compile: `javac src/com/school/*.java` (or list individual files including `AttendanceRecord.java`)
 3. Run: `java -cp src com.school.Main`
