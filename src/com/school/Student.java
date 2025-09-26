@@ -1,5 +1,5 @@
 
-package src.com.school;
+package com.school;
 
 public class Student extends Person implements Storable { // Extends Person
 
