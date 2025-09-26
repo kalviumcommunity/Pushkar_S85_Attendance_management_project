@@ -1,4 +1,4 @@
-package src.com.school;
+package com.school;
 
 public class Staff extends Person {
     private String role; // e.g., "Librarian", "Administrator"

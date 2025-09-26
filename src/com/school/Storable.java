@@ -1,4 +1,4 @@
-package src.com.school;
+package com.school;
 
 public interface Storable {
     String toDataString(); // To convert object data to a savable string format
