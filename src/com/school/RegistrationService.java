@@ -7,74 +7,90 @@ public class RegistrationService {
     private List<Student> students;
     private List<Teacher> teachers;
     private List<Staff> staffMembers;
-    private List<Course> courses;
+    private List<Course> courses; // Managing courses here for now
     private FileStorageService storageService;
 
-    private static final String STUDENTS_FILE = "students.txt";
-    private static final String TEACHERS_FILE = "teachers.txt";
-    private static final String STAFF_FILE = "staff.txt";
-    private static final String COURSES_FILE = "courses.txt";
+    private final String STUDENTS_FILE = "students.txt";
+    private final String TEACHERS_FILE = "teachers.txt";
+    private final String STAFF_FILE = "staff.txt";
+    private final String COURSES_FILE = "courses.txt";
+
 
     public RegistrationService(FileStorageService storageService) {
-        this.storageService = storageService;
         this.students = new ArrayList<>();
         this.teachers = new ArrayList<>();
         this.staffMembers = new ArrayList<>();
         this.courses = new ArrayList<>();
+        this.storageService = storageService;
+        // In a real app, load data here
     }
 
     public Student registerStudent(String name, String gradeLevel) {
         Student student = new Student(name, gradeLevel);
-        students.add(student);
+        this.students.add(student);
+        System.out.println("Student registered: " + name + " (ID: " + student.getId() + ")");
         return student;
     }
 
     public Teacher registerTeacher(String name, String subject) {
         Teacher teacher = new Teacher(name, subject);
-        teachers.add(teacher);
+        this.teachers.add(teacher);
+        System.out.println("Teacher registered: " + name + " (ID: " + teacher.getId() + ")");
         return teacher;
     }
 
     public Staff registerStaff(String name, String role) {
         Staff staff = new Staff(name, role);
-        staffMembers.add(staff);
+        this.staffMembers.add(staff);
+        System.out.println("Staff registered: " + name + " (ID: " + staff.getId() + ")");
         return staff;
     }
 
-    public Course createCourse(String courseName) {
-        Course course = new Course(courseName);
-        courses.add(course);
+    // Updated to accept capacity
+    public Course createCourse(String courseName, int capacity) {
+        Course course = new Course(courseName, capacity);
+        this.courses.add(course);
+        System.out.println("Course created: " + courseName + " (ID: C" + course.getCourseId() + ", Capacity: " + capacity + ")");
         return course;
     }
 
-    public List<Student> getStudents() {
-        return new ArrayList<>(students);
+    public boolean enrollStudentInCourse(Student student, Course course) {
+        if (student == null || course == null) {
+            System.out.println("Error: Student or Course cannot be null for enrollment.");
+            return false;
+        }
+        // Check if student is already enrolled (optional, good practice)
+        if (course.getEnrolledStudents().contains(student)) {
+            System.out.println("Info: Student " + student.getName() + " is already enrolled in " + course.getCourseName());
+            return true; // Or false if re-enrollment is an error
+        }
+
+        if (course.addStudent(student)) {
+            System.out.println("Student " + student.getName() + " successfully enrolled in " + course.getCourseName());
+            return true;
+        } else {
+            System.out.println("Failed to enroll student " + student.getName() + " in " + course.getCourseName() + ". Course is full.");
+            return false;
+        }
     }
 
-    public List<Teacher> getTeachers() {
-        return new ArrayList<>(teachers);
+    public List<Student> getStudents() { return students; }
+    public List<Teacher> getTeachers() { return teachers; }
+    public List<Staff> getStaffMembers() { return staffMembers; }
+    public List<Course> getCourses() { return courses; }
+
+    public Student findStudentById(int studentId) {
+        for (Student s : students) {
+            if (s.getId() == studentId) return s;
+        }
+        return null;
     }
 
-    public List<Staff> getStaffMembers() {
-        return new ArrayList<>(staffMembers);
-    }
-
-    public List<Course> getCourses() {
-        return new ArrayList<>(courses);
-    }
-
-    public Student findStudentById(int id) {
-        return students.stream()
-                      .filter(s -> s.getId() == id)
-                      .findFirst()
-                      .orElse(null);
-    }
-
-    public Course findCourseById(int id) {
-        return courses.stream()
-                     .filter(c -> c.getCourseId() == id)
-                     .findFirst()
-                     .orElse(null);
+    public Course findCourseById(int courseId) {
+        for (Course c : courses) {
+            if (c.getCourseId() == courseId) return c;
+        }
+        return null;
     }
 
     public List<Person> getAllPeople() {
@@ -90,5 +106,6 @@ public class RegistrationService {
         storageService.saveData(teachers, TEACHERS_FILE);
         storageService.saveData(staffMembers, STAFF_FILE);
         storageService.saveData(courses, COURSES_FILE);
+        System.out.println("All registration data saved.");
     }
 }
